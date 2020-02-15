@@ -148,7 +148,7 @@ namespace System.Windows.Forms
                 _fileNames = ProcessVistaFiles(dialog);
                 if (ProcessFileNames())
                 {
-                    CancelEventArgs ceevent = new CancelEventArgs();
+                    FileDialogCancelEventArgs ceevent = new FileDialogCancelEventArgs(GetDialogWindow(dialog));
                     if (NativeWindow.WndProcShouldBeDebuggable)
                     {
                         OnFileOk(ceevent);
@@ -190,6 +190,19 @@ namespace System.Windows.Forms
                 }
             }
             return ok;
+        }
+
+        private static IWin32Window GetDialogWindow(FileDialogNative.IFileDialog dialog)
+        {
+            IntPtr hwnd;
+
+            unsafe
+            {
+                if (dialog.GetWindow(&hwnd) != HRESULT.S_OK || hwnd == IntPtr.Zero)
+                    return null;
+            }
+
+            return new NativeDialogWindow(new HandleRef(dialog, hwnd));
         }
 
         private class VistaDialogEvents : FileDialogNative.IFileDialogEvents

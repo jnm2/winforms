@@ -349,7 +349,7 @@ namespace System.Windows.Forms
         /// </remarks>
         /// </summary>
         [SRDescription(nameof(SR.FDfileOkDescr))]
-        public event CancelEventHandler FileOk
+        public event EventHandler<FileDialogCancelEventArgs> FileOk
         {
             add => Events.AddHandler(EventFileOk, value);
             remove => Events.RemoveHandler(EventFileOk, value);
@@ -358,7 +358,7 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Processes the CDN_FILEOK notification.
         /// </summary>
-        private bool DoFileOk(IntPtr lpOFN)
+        private bool DoFileOk(IntPtr lpOFN, IntPtr dialogHWnd)
         {
             NativeMethods.OPENFILENAME_I ofn = Marshal.PtrToStructure<NativeMethods.OPENFILENAME_I>(lpOFN);
             int saveOptions = _options;
@@ -385,7 +385,7 @@ namespace System.Windows.Forms
 
                 if (ProcessFileNames())
                 {
-                    CancelEventArgs ceevent = new CancelEventArgs();
+                    FileDialogCancelEventArgs ceevent = new FileDialogCancelEventArgs(new NativeDialogWindow(new HandleRef(this, dialogHWnd)));
                     if (NativeWindow.WndProcShouldBeDebuggable)
                     {
                         OnFileOk(ceevent);
@@ -540,7 +540,7 @@ namespace System.Windows.Forms
                                     return NativeMethods.InvalidIntPtr;
                                 }
                             }
-                            if (!DoFileOk(notify->lpOFN))
+                            if (!DoFileOk(notify->lpOFN, _dialogHWnd))
                             {
                                 User32.SetWindowLong(hWnd, 0, NativeMethods.InvalidIntPtr);
                                 return NativeMethods.InvalidIntPtr;
@@ -598,9 +598,9 @@ namespace System.Windows.Forms
         /// <summary>
         ///  Raises the <see cref='FileOk'/> event.
         /// </summary>
-        protected void OnFileOk(CancelEventArgs e)
+        protected void OnFileOk(FileDialogCancelEventArgs e)
         {
-            CancelEventHandler handler = (CancelEventHandler)Events[EventFileOk];
+            EventHandler<FileDialogCancelEventArgs> handler = (EventHandler<FileDialogCancelEventArgs>)Events[EventFileOk];
             handler?.Invoke(this, e);
         }
 

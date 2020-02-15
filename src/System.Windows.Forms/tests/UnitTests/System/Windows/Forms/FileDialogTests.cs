@@ -430,12 +430,12 @@ namespace System.Windows.Forms.Tests
         public static IEnumerable<object[]> CancelEventArgs_TestData()
         {
             yield return new object[] { null };
-            yield return new object[] { new CancelEventArgs() };
+            yield return new object[] { new FileDialogCancelEventArgs(new SubWin32Window()) };
         }
 
         [Theory]
         [MemberData(nameof(CancelEventArgs_TestData))]
-        public void FileDialog_OnFileOk_Invoke_Success(CancelEventArgs eventArgs)
+        public void FileDialog_OnFileOk_Invoke_Success(FileDialogCancelEventArgs eventArgs)
         {
             var dialog = new SubFileDialog();
 
@@ -444,7 +444,7 @@ namespace System.Windows.Forms.Tests
 
             // Handler.
             int callCount = 0;
-            CancelEventHandler handler = (sender, e) =>
+            EventHandler<FileDialogCancelEventArgs> handler = (sender, e) =>
             {
                 Assert.Same(dialog, sender);
                 Assert.Same(eventArgs, e);
@@ -680,7 +680,7 @@ namespace System.Windows.Forms.Tests
 
             private protected override string[] ProcessVistaFiles(FileDialogNative.IFileDialog dialog) => null;
 
-            public new void OnFileOk(CancelEventArgs e) => base.OnFileOk(e);
+            public new void OnFileOk(FileDialogCancelEventArgs e) => base.OnFileOk(e);
 
             public new bool RunDialog(IntPtr hWndOwner) => base.RunDialog(hWndOwner);
         }
@@ -690,6 +690,11 @@ namespace System.Windows.Forms.Tests
             public override void Reset()
             {
             }
+        }
+
+        private class SubWin32Window : IWin32Window
+        {
+            public IntPtr Handle { get; }
         }
     }
 }

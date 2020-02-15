@@ -122,7 +122,7 @@ namespace System.Windows.Forms
         [ComImport]
         [Guid(IIDGuid.IFileDialog)]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        public interface IFileDialog
+        public interface IFileDialog : Interop.Ole32.IOleWindow
         {
             [PreserveSig]
             int Show([In] IntPtr parent);

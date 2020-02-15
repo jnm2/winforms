@@ -2875,7 +2875,7 @@ System.Windows.Forms.FileDialog.DereferenceLinks.set -> void
 System.Windows.Forms.FileDialog.FileName.get -> string
 System.Windows.Forms.FileDialog.FileName.set -> void
 System.Windows.Forms.FileDialog.FileNames.get -> string[]
-System.Windows.Forms.FileDialog.FileOk -> System.ComponentModel.CancelEventHandler
+System.Windows.Forms.FileDialog.FileOk -> System.EventHandler<System.Windows.Forms.FileDialogCancelEventArgs>
 System.Windows.Forms.FileDialog.Filter.get -> string
 System.Windows.Forms.FileDialog.Filter.set -> void
 System.Windows.Forms.FileDialog.FilterIndex.get -> int
@@ -2892,6 +2892,9 @@ System.Windows.Forms.FileDialog.Title.get -> string
 System.Windows.Forms.FileDialog.Title.set -> void
 System.Windows.Forms.FileDialog.ValidateNames.get -> bool
 System.Windows.Forms.FileDialog.ValidateNames.set -> void
+System.Windows.Forms.FileDialogCancelEventArgs
+System.Windows.Forms.FileDialogCancelEventArgs.DialogWindow.get -> System.Windows.Forms.IWin32Window
+System.Windows.Forms.FileDialogCancelEventArgs.FileDialogCancelEventArgs(System.Windows.Forms.IWin32Window dialogWindow) -> void
 System.Windows.Forms.FixedPanel
 System.Windows.Forms.FixedPanel.None = 0 -> System.Windows.Forms.FixedPanel
 System.Windows.Forms.FixedPanel.Panel1 = 1 -> System.Windows.Forms.FixedPanel
